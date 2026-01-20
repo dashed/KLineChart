@@ -1,0 +1,59 @@
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="keywords" content="kline ichimoku cloud indicator technical analysis"/>
+    <meta name="description" content="Ichimoku Cloud indicator test"/>
+    <script type="text/javascript" src="../../../dist/klinecharts.min.js"></script>
+    <script type="text/javascript" src="../../js/dataSource.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/chart.css"/>
+    <title>Indicator -- Ichimoku Cloud</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="chart"></div>
+    <div id="info" style="padding: 10px; font-family: monospace;"></div>
+    <script>
+      window.onload = function () {
+        var chart = klinecharts.init('chart')
+
+        // Create Ichimoku Cloud indicator on the main pane
+        chart.createIndicator('ICHIMOKU', false, { id: 'candle_pane' })
+
+        // Set symbol and period (required for new API)
+        chart.setSymbol({ ticker: 'TEST', pricePrecision: 2, volumePrecision: 0 })
+        chart.setPeriod({ multiplier: 1, span: 'day', text: '1D' })
+
+        // Set data loader (new API)
+        chart.setDataLoader({
+          getBars: function (params) {
+            params.callback(generated(), false)
+          }
+        })
+
+        // Display indicator info
+        var indicators = klinecharts.getSupportedIndicators()
+        var hasIchimoku = indicators.includes('ICHIMOKU')
+        document.getElementById('info').innerHTML =
+          'Ichimoku Cloud registered: ' + (hasIchimoku ? 'YES' : 'NO') + '<br>' +
+          'Total indicators: ' + indicators.length
+      }
+    </script>
+  </body>
+</html>
